@@ -11,6 +11,15 @@ class CardImageSelection {
   }
 
   /*
+  * 選択したファイル（複数）を返す(※)リストには選択順に格納されている
+  */
+  static Future<List<File>> selectedImageFiles() async {
+    var files = await FilePicker.getMultiFile(type: FileType.image);
+    if(files == null) {return new List<File>();}
+    return files;
+  }
+
+  /*
   * 選択したファイル（単数）のパスを返す（※）未使用
   */
   static Future<String> selectedImagePath() async {
