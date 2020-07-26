@@ -56,7 +56,7 @@ class AnimationCardState extends State<AnimationCard>
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 100.0,
+      width: 150.0,
       child: GestureDetector(
         /*
          * トランプタッチジェスチャー
