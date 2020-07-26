@@ -14,11 +14,17 @@ class _$PlayCardTearOff {
 
 // ignore: unused_element
   _PlayCard call(
-      {bool isFlipped = false, bool isLocked = false, String location = ''}) {
+      {bool isFlipped = false,
+      bool isLocked = false,
+      String path = '',
+      Uint8List bytes,
+      CardLocation cardLocation}) {
     return _PlayCard(
       isFlipped: isFlipped,
       isLocked: isLocked,
-      location: location,
+      path: path,
+      bytes: bytes,
+      cardLocation: cardLocation,
     );
   }
 }
@@ -29,7 +35,9 @@ const $PlayCard = _$PlayCardTearOff();
 mixin _$PlayCard {
   bool get isFlipped;
   bool get isLocked;
-  String get location;
+  String get path;
+  Uint8List get bytes;
+  CardLocation get cardLocation;
 
   $PlayCardCopyWith<PlayCard> get copyWith;
 }
@@ -37,7 +45,12 @@ mixin _$PlayCard {
 abstract class $PlayCardCopyWith<$Res> {
   factory $PlayCardCopyWith(PlayCard value, $Res Function(PlayCard) then) =
       _$PlayCardCopyWithImpl<$Res>;
-  $Res call({bool isFlipped, bool isLocked, String location});
+  $Res call(
+      {bool isFlipped,
+      bool isLocked,
+      String path,
+      Uint8List bytes,
+      CardLocation cardLocation});
 }
 
 class _$PlayCardCopyWithImpl<$Res> implements $PlayCardCopyWith<$Res> {
@@ -51,12 +64,18 @@ class _$PlayCardCopyWithImpl<$Res> implements $PlayCardCopyWith<$Res> {
   $Res call({
     Object isFlipped = freezed,
     Object isLocked = freezed,
-    Object location = freezed,
+    Object path = freezed,
+    Object bytes = freezed,
+    Object cardLocation = freezed,
   }) {
     return _then(_value.copyWith(
       isFlipped: isFlipped == freezed ? _value.isFlipped : isFlipped as bool,
       isLocked: isLocked == freezed ? _value.isLocked : isLocked as bool,
-      location: location == freezed ? _value.location : location as String,
+      path: path == freezed ? _value.path : path as String,
+      bytes: bytes == freezed ? _value.bytes : bytes as Uint8List,
+      cardLocation: cardLocation == freezed
+          ? _value.cardLocation
+          : cardLocation as CardLocation,
     ));
   }
 }
@@ -65,7 +84,12 @@ abstract class _$PlayCardCopyWith<$Res> implements $PlayCardCopyWith<$Res> {
   factory _$PlayCardCopyWith(_PlayCard value, $Res Function(_PlayCard) then) =
       __$PlayCardCopyWithImpl<$Res>;
   @override
-  $Res call({bool isFlipped, bool isLocked, String location});
+  $Res call(
+      {bool isFlipped,
+      bool isLocked,
+      String path,
+      Uint8List bytes,
+      CardLocation cardLocation});
 }
 
 class __$PlayCardCopyWithImpl<$Res> extends _$PlayCardCopyWithImpl<$Res>
@@ -80,22 +104,32 @@ class __$PlayCardCopyWithImpl<$Res> extends _$PlayCardCopyWithImpl<$Res>
   $Res call({
     Object isFlipped = freezed,
     Object isLocked = freezed,
-    Object location = freezed,
+    Object path = freezed,
+    Object bytes = freezed,
+    Object cardLocation = freezed,
   }) {
     return _then(_PlayCard(
       isFlipped: isFlipped == freezed ? _value.isFlipped : isFlipped as bool,
       isLocked: isLocked == freezed ? _value.isLocked : isLocked as bool,
-      location: location == freezed ? _value.location : location as String,
+      path: path == freezed ? _value.path : path as String,
+      bytes: bytes == freezed ? _value.bytes : bytes as Uint8List,
+      cardLocation: cardLocation == freezed
+          ? _value.cardLocation
+          : cardLocation as CardLocation,
     ));
   }
 }
 
 class _$_PlayCard with DiagnosticableTreeMixin implements _PlayCard {
   const _$_PlayCard(
-      {this.isFlipped = false, this.isLocked = false, this.location = ''})
+      {this.isFlipped = false,
+      this.isLocked = false,
+      this.path = '',
+      this.bytes,
+      this.cardLocation})
       : assert(isFlipped != null),
         assert(isLocked != null),
-        assert(location != null);
+        assert(path != null);
 
   @JsonKey(defaultValue: false)
   @override
@@ -105,11 +139,15 @@ class _$_PlayCard with DiagnosticableTreeMixin implements _PlayCard {
   final bool isLocked;
   @JsonKey(defaultValue: '')
   @override
-  final String location;
+  final String path;
+  @override
+  final Uint8List bytes;
+  @override
+  final CardLocation cardLocation;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'PlayCard(isFlipped: $isFlipped, isLocked: $isLocked, location: $location)';
+    return 'PlayCard(isFlipped: $isFlipped, isLocked: $isLocked, path: $path, bytes: $bytes, cardLocation: $cardLocation)';
   }
 
   @override
@@ -119,7 +157,9 @@ class _$_PlayCard with DiagnosticableTreeMixin implements _PlayCard {
       ..add(DiagnosticsProperty('type', 'PlayCard'))
       ..add(DiagnosticsProperty('isFlipped', isFlipped))
       ..add(DiagnosticsProperty('isLocked', isLocked))
-      ..add(DiagnosticsProperty('location', location));
+      ..add(DiagnosticsProperty('path', path))
+      ..add(DiagnosticsProperty('bytes', bytes))
+      ..add(DiagnosticsProperty('cardLocation', cardLocation));
   }
 
   @override
@@ -132,9 +172,13 @@ class _$_PlayCard with DiagnosticableTreeMixin implements _PlayCard {
             (identical(other.isLocked, isLocked) ||
                 const DeepCollectionEquality()
                     .equals(other.isLocked, isLocked)) &&
-            (identical(other.location, location) ||
+            (identical(other.path, path) ||
+                const DeepCollectionEquality().equals(other.path, path)) &&
+            (identical(other.bytes, bytes) ||
+                const DeepCollectionEquality().equals(other.bytes, bytes)) &&
+            (identical(other.cardLocation, cardLocation) ||
                 const DeepCollectionEquality()
-                    .equals(other.location, location)));
+                    .equals(other.cardLocation, cardLocation)));
   }
 
   @override
@@ -142,7 +186,9 @@ class _$_PlayCard with DiagnosticableTreeMixin implements _PlayCard {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(isFlipped) ^
       const DeepCollectionEquality().hash(isLocked) ^
-      const DeepCollectionEquality().hash(location);
+      const DeepCollectionEquality().hash(path) ^
+      const DeepCollectionEquality().hash(bytes) ^
+      const DeepCollectionEquality().hash(cardLocation);
 
   @override
   _$PlayCardCopyWith<_PlayCard> get copyWith =>
@@ -150,15 +196,23 @@ class _$_PlayCard with DiagnosticableTreeMixin implements _PlayCard {
 }
 
 abstract class _PlayCard implements PlayCard {
-  const factory _PlayCard({bool isFlipped, bool isLocked, String location}) =
-      _$_PlayCard;
+  const factory _PlayCard(
+      {bool isFlipped,
+      bool isLocked,
+      String path,
+      Uint8List bytes,
+      CardLocation cardLocation}) = _$_PlayCard;
 
   @override
   bool get isFlipped;
   @override
   bool get isLocked;
   @override
-  String get location;
+  String get path;
+  @override
+  Uint8List get bytes;
+  @override
+  CardLocation get cardLocation;
   @override
   _$PlayCardCopyWith<_PlayCard> get copyWith;
 }

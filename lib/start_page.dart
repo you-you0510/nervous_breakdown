@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
+import 'package:nervousbreakdown/game_controller.dart';
 import 'package:nervousbreakdown/game_state.dart';
 import 'package:nervousbreakdown/nervous_breakdown_page.dart';
-import 'package:nervousbreakdown/score_controller.dart';
 
 class StartPage extends StatefulWidget {
   @override
@@ -50,10 +50,10 @@ class _StartPageState extends State<StartPage> {
                 context,
                 MaterialPageRoute(
                   builder: (context) =>
-                      StateNotifierProvider<ScoreController, GameState>(
+                      StateNotifierProvider<GameController, GameState>(
                     create: (context) =>
                         //sliderの選択値をstateNotifierに渡す
-                        ScoreController(_sliderValue.toInt()),
+                        GameController(_sliderValue.toInt()),
                     child: NervousBreakdownPage(),
                   ),
                 ),

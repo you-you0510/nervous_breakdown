@@ -10,15 +10,14 @@ class CardService {
       //重複しないようにurlを生成
       String url = _generateUrl();
 
-      while (cards.firstWhere((card) => card.location == url,
-              orElse: () => null) !=
+      while (cards.firstWhere((card) => card.path == url, orElse: () => null) !=
           null) {
         url = _generateUrl();
       }
 
       //ペアにするため、２枚追加
-      cards.add(PlayCard(location: url));
-      cards.add(PlayCard(location: url));
+      cards.add(PlayCard(path: url, cardLocation: CardLocation.onNetwork));
+      cards.add(PlayCard(path: url, cardLocation: CardLocation.onNetwork));
     }
 
     cards.shuffle();

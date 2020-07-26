@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flippable_box/flippable_box.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:nervousbreakdown/game_controller.dart';
 import 'package:nervousbreakdown/play_card.dart';
-import 'package:nervousbreakdown/score_controller.dart';
 import 'package:provider/provider.dart';
 
 class NervousBreakdownPage extends StatefulWidget {
@@ -19,7 +22,9 @@ class _NervousBreakdownPageState extends State<NervousBreakdownPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('逃げ恥神経衰弱'),
+        title: Text(
+          context.select((GameController controller) => controller.gameTitle),
+        ),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -30,34 +35,10 @@ class _NervousBreakdownPageState extends State<NervousBreakdownPage> {
                 child: ListView.builder(
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
+                  itemCount: context.select((GameController controller) =>
+                      controller.playCards.length),
                   itemBuilder: (BuildContext context, int index) {
-                    if (index <
-                        context.read<ScoreController>().playCards.length) {
-                      PlayCard card =
-                          context.read<ScoreController>().playCards[index];
-
-                      return GestureDetector(
-                        onTap: () => setState(() {
-                          _onTap(index);
-                        }),
-                        child: FlippableBox(
-                          front: Container(
-                            height: 250,
-                            child:
-                                Image.asset('images/Cartie_thinking_icon.png'),
-                          ),
-                          back: Container(
-                            height: 250,
-                            child: Image.network(
-                              card.location,
-                            ),
-                          ),
-                          isFlipped: card.isFlipped,
-                        ),
-                      );
-                    }
-
-                    return null;
+                    return _flippableBox(index);
                   },
                 )),
           ),
@@ -66,8 +47,51 @@ class _NervousBreakdownPageState extends State<NervousBreakdownPage> {
     );
   }
 
+  Widget _flippableBox(int index) {
+    PlayCard card = context.read<GameController>().playCards[index];
+
+    return ListTile(
+      onTap: () => setState(() {
+        _onTap(index);
+      }),
+      title: FlippableBox(
+        front: Container(
+          height: 250,
+          child: Image.asset('images/Cartie_thinking_icon.png'),
+        ),
+        back: Container(
+          height: 250,
+          child: _backImage(card),
+        ),
+        isFlipped: card.isFlipped,
+      ),
+    );
+  }
+
+  Widget _backImage(PlayCard card) {
+    Image image;
+
+    //TODO: who should concern the type of image?
+    switch (card.cardLocation) {
+      case CardLocation.onNetwork:
+        image = Image.network(card.path);
+        break;
+      case CardLocation.onAsset:
+        image = Image.asset(card.path);
+        break;
+      case CardLocation.onFile:
+        image = Image.file(File(card.path));
+        break;
+      case CardLocation.onMemory:
+        image = Image.memory(card.bytes);
+        break;
+    }
+
+    return image;
+  }
+
   void _onTap(int index) {
-    ScoreController notifier = this.context.read<ScoreController>();
+    GameController notifier = this.context.read<GameController>();
 
     //no operation when card is locked.
     if (notifier.playCards[index].isLocked) {
@@ -88,7 +112,7 @@ class _NervousBreakdownPageState extends State<NervousBreakdownPage> {
   }
 
   void _openModalBottomSheet(GameResult state) {
-    ScoreController notifier = this.context.read<ScoreController>();
+    GameController notifier = this.context.read<GameController>();
     String message;
 
     if (state == GameResult.Matched) {

@@ -10,10 +10,10 @@ enum GameResult {
   Continue,
 }
 
-class ScoreController extends StateNotifier<GameState> with LocatorMixin {
+class GameController extends StateNotifier<GameState> with LocatorMixin {
   final int _cardCount;
 
-  ScoreController(this._cardCount) : super(const GameState()) {
+  GameController(this._cardCount) : super(const GameState()) {
     return;
   }
 
@@ -24,6 +24,10 @@ class ScoreController extends StateNotifier<GameState> with LocatorMixin {
     //TODO: call card service.
     Map<int, PlayCard> cards = CardService.select(_cardCount);
     state = state.copyWith(playCards: cards);
+  }
+
+  String get gameTitle {
+    return '逃げ恥神経衰弱';
   }
 
   Map<int, PlayCard> get playCards {
@@ -48,7 +52,7 @@ class ScoreController extends StateNotifier<GameState> with LocatorMixin {
   GameResult openCard(int index) {
     PlayCard ret;
 
-    //カードの状態をOpen状態、再Open付加にしてリストをコピー
+    //カードの状態をOpen状態、再Open不可にしてリストをコピー
     Map<int, PlayCard> cards = state.playCards.map((key, value) {
       if (key == index) {
         ret = value.copyWith(isFlipped: true, isLocked: true);
@@ -76,7 +80,7 @@ class ScoreController extends StateNotifier<GameState> with LocatorMixin {
       return GameResult.Continue;
     }
 
-    if (state.firstCard.location == state.secondCard.location) {
+    if (state.firstCard.path == state.secondCard.path) {
       isMatched = true;
     } else {
       isMatched = false;
@@ -90,7 +94,7 @@ class ScoreController extends StateNotifier<GameState> with LocatorMixin {
   }
 
   void next() {
-    if (state.firstCard.location == state.secondCard.location) {
+    if (state.firstCard.path == state.secondCard.path) {
       //TODO: playerのmyPlayCardsにfirstCard,SecondCardを追加してstate更新
       //player = state.currentPlayer.copyWith(myPlayCards: )
       //List<Player> newPlayers = state.players.toList()
