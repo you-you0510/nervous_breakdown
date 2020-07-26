@@ -33,6 +33,15 @@ dependencies:
   # Use to pick file.
   file_picker: ^1.4.3+2
 
+  # Use to access the local path.
+  path_provider: ^0.5.0+1
+
+  # Use to access external public storage.
+  # Copyright (c) 2019 yasukotelin
+  # Released under the MIT license
+  # https://github.com/yasukotelin/ext_storage/blob/master/LICENSE
+  ext_storage:
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
