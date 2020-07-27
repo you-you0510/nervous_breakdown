@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nervousbreakdown/AnimationCardRepository.dart';
 import 'CardImageSelection.dart';
 import 'CardPage.dart';
 import 'AnimationCard.dart';
@@ -41,26 +42,16 @@ class CardPageState extends State<CardPage> {
   }
 
   void _onPressed() async {
-    _changeCards();
+    var r = new AnimationCardRepository();
+    var cards = await r.drawAtRandom(3);
+    _replaceAllCards(cards);
   }
 
-  /*
-  * 選択したカードで差し替える
-  */
-  void _changeCards() async {
-    // ファイル選択(ユーザが選ぶまで待つ)
-    var files = await CardImageSelection.selectedImageFiles();
+  void _replaceAllCards(List<AnimationCard> replace) async {
+    assert(replace != null);
 
-    // 未選択の場合、NOP
-    if (files.isEmpty) { return; }
-
-    // 全カードを差し替え
-    cards.clear();
-    files.forEach((f) {
-      var card = AnimationCard(Image.file(f));
-      setState(() => cards.add(card));
-    }
-    );
+    this.cards.clear();
+    setState(() => this.cards.addAll(replace));
   }
 
   /*
