@@ -51,9 +51,14 @@ class _StartPageState extends State<StartPage> {
                 MaterialPageRoute(
                   builder: (context) =>
                       StateNotifierProvider<GameController, GameState>(
-                    create: (context) =>
-                        //sliderの選択値をstateNotifierに渡す
-                        GameController(_sliderValue.toInt()),
+                    create: (context) {
+                      //sliderの選択値をstateNotifierに渡す
+                      GameController controller =
+                          GameController(_sliderValue.toInt());
+                      controller.addPlayer('player1');
+
+                      return controller;
+                    },
                     child: NervousBreakdownPage(),
                   ),
                 ),
