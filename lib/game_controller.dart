@@ -11,19 +11,21 @@ enum GameResult {
 }
 
 class GameController extends StateNotifier<GameState> with LocatorMixin {
-  final int _cardCount;
-
-  GameController(this._cardCount) : super(const GameState()) {
+  GameController() : super(const GameState()) {
     return;
   }
 
   @override
   void initState() {
     super.initState();
+  }
 
-    //TODO: call card service.
-    Map<int, PlayCard> cards = CardService.select(_cardCount);
-    state = state.copyWith(playCards: cards);
+  Future<Map<int, PlayCard>> selectCards(int cardCount) async {
+    Future<Map<int, PlayCard>> cards = CardService.select(cardCount);
+
+    cards.then((value) => state = state.copyWith(playCards: value));
+
+    return cards;
   }
 
   String get gameTitle {

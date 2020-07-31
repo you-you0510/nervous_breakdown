@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:nervousbreakdown/game_controller.dart';
-import 'package:nervousbreakdown/game_state.dart';
 import 'package:nervousbreakdown/nervous_breakdown_page.dart';
+import 'package:nervousbreakdown/play_card.dart';
+import 'package:provider/provider.dart';
 
 class StartPage extends StatefulWidget {
   @override
-  _StartPageState createState() => _StartPageState();
+  _StartPageState createState() {
+    return _StartPageState();
+  }
 }
 
 class _StartPageState extends State<StartPage> {
@@ -14,6 +16,9 @@ class _StartPageState extends State<StartPage> {
 
   @override
   Widget build(BuildContext context) {
+    final GameController state =
+        context.select((GameController value) => value);
+
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -27,7 +32,7 @@ class _StartPageState extends State<StartPage> {
             min: 1.0,
             max: 25.0,
             divisions: 25,
-            label: '${_sliderValue.truncate()}',
+            label: '${_sliderValue.toInt()}',
             onChanged: (double value) {
               setState(() {
                 _sliderValue = value;
@@ -37,7 +42,7 @@ class _StartPageState extends State<StartPage> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              'I need ${_sliderValue.truncate()} images.',
+              'I need ${_sliderValue.toInt()} images.',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ),
@@ -49,18 +54,24 @@ class _StartPageState extends State<StartPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      StateNotifierProvider<GameController, GameState>(
-                    create: (context) {
-                      //sliderの選択値をstateNotifierに渡す
-                      GameController controller =
-                          GameController(_sliderValue.toInt());
-                      controller.addPlayer('player1');
+                  builder: (context) {
+                    return FutureBuilder(
+                      future: state.selectCards(_sliderValue.toInt()),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<Map<int, PlayCard>> snapshot) {
+                        if (snapshot.connectionState != ConnectionState.done) {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
 
-                      return controller;
-                    },
-                    child: NervousBreakdownPage(),
-                  ),
+                        //TODO : implement player select widgets and logic
+                        state.addPlayer('playerName1');
+
+                        return NervousBreakdownPage();
+                      },
+                    );
+                  },
                 ),
               );
             },

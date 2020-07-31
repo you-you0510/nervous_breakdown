@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:nervousbreakdown/play_card.dart';
 
 class CardService {
-  static Map<int, PlayCard> select(int cardCount) {
+  static Future<Map<int, PlayCard>> select(int cardCount) async {
     List<PlayCard> cards = List<PlayCard>();
 
     for (int index = 0; index < cardCount; index++) {
@@ -26,7 +26,11 @@ class CardService {
       ret[index] = cards[index];
     }
 
-    return ret;
+    await Future.delayed(
+      Duration(seconds: 1),
+    );
+
+    return Future.value(ret);
   }
 
   static String _generateUrl() {

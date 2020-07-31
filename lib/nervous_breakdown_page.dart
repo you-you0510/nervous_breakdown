@@ -33,18 +33,19 @@ class _NervousBreakdownPageState extends State<NervousBreakdownPage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          new Expanded(
-            child: new SizedBox(
-                height: 200,
-                child: ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: context.select((GameController controller) =>
-                      controller.playCards.length),
-                  itemBuilder: (BuildContext context, int index) {
-                    return _flippableBox(index);
-                  },
-                )),
+          Expanded(
+            child: SizedBox(
+              height: 200,
+              child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: context.select(
+                    (GameController controller) => controller.playCards.length),
+                itemBuilder: (BuildContext context, int index) {
+                  return _flippableBox(index);
+                },
+              ),
+            ),
           ),
         ],
       ),
